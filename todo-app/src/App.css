@@ -1,38 +1,97 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: #f5f5f5;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.app {
+  width: 400px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.title {
+  max-height: 500px;
+  overflow-y: auto;
+  text-align: center;
+  font-size: 100px;
+  color: rgba(175, 47, 47, 0.15);
+  font-weight: 100;
+  margin: 0;
+}
+
+.todo-container {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-input {
+  width: 92.5%;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.task-list {
+  max-height: 100%;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  word-wrap: break-word;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.task-item.completed span {
+  text-decoration: line-through;
+  color: #d9d9d9;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  flex-grow: 1;
+  hyphens: auto;
+}
+
+.task-item input[type='checkbox'] {
+  margin-right: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #777;
+}
+
+.filters button {
+  border: none;
+  background: none;
+  color: inherit;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.filters button.active {
+  border: 1px solid rgba(175, 47, 47, 0.2);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.clear-button {
+  border: none;
+  background: none;
+  color: #d00;
+  cursor: pointer;
 }

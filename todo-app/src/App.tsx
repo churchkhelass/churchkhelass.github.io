@@ -1,44 +1,67 @@
-import React, { useState } from "react";
-import { Task } from "./types";
-import TaskInput from "../components/TaskInput";
-import TaskList from "../components/TaskList";
+import React, { useState } from 'react';
+import './App.css';
+import Header from './components/Header';
+import TodoInput from './components/TodoInput';
+import TaskList from './components/TaskList';
+import Footer from './components/Footer';
+
+interface Task {
+  id: string;
+  text: string;
+  completed: boolean;
+}
 
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: '1', text: 'Тестовое задание', completed: false },
+    { id: '2', text: 'Прекрасный код', completed: true },
+    { id: '3', text: 'Покрытие тестами', completed: false },
+  ]);
+  const [newTask, setNewTask] = useState('');
+  const [filter, setFilter] = useState('all');
 
-  const addTask = (text: string) => {
-    const newTask: Task = {
-      id: Date.now().toString(),
-      text,
-      completed: false,
-    };
-    setTasks([...tasks, newTask]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTask(e.target.value);
   };
 
-  const toggleTaskCompletion = (id: string) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && newTask.trim()) {
+      setTasks([{ id: Date.now().toString(), text: newTask, completed: false }, ...tasks]);
+      setNewTask('');
+    }
   };
 
-  const deleteTask = (id: string) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const toggleTask = (id: string) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
-  const allTasks = tasks;
-  const completedTasks = tasks.filter(task => task.completed);
-  const activeTasks = tasks.filter(task => !task.completed);
+  const clearCompleted = () => {
+    setTasks(tasks.filter((task) => !task.completed));
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'active') return !task.completed;
+    if (filter === 'completed') return task.completed;
+    return true;
+  });
 
   return (
-    <div>
-      <h1>ToDo App</h1>
-      <TaskInput addTask={addTask} />
-      <h2>All Tasks</h2>
-      <TaskList tasks={allTasks} toggleCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
-      <h2>Active Tasks</h2>
-      <TaskList tasks={activeTasks} toggleCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
-      <h2>Completed Tasks</h2>
-      <TaskList tasks={completedTasks} toggleCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
+    <div className="app">
+      <Header />
+      <div className="todo-container">
+        <TodoInput value={newTask} onChange={handleInputChange} onKeyDown={handleKeyDown} />
+        <TaskList tasks={filteredTasks} toggleTask={toggleTask} />
+        <Footer
+          tasksLeft={tasks.filter((task) => !task.completed).length}
+          filter={filter}
+          setFilter={setFilter}
+          clearCompleted={clearCompleted}
+        />
+      </div>
     </div>
   );
 };
